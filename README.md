@@ -26,9 +26,28 @@ Implemented so far:
 - Multiprocessing for faster rendering
 - Basic caching optimizations
 
+## Usage
+Run the TinyTracer renderer using `uv`:
+```bash
+uv run tinytracer/main.py
+```
+
+The generated image will be in `.ppm` format by default at `tinytracer\output` folder.
+
+For `.png` format, use the `--format=png` argument.
+
+```bash
+uv run tinytracer/main.py --format=png
+```
+
+To run tests:
+```bash
+uv run pytest
+```
 ## Table of Contents
 
 - [Installation](#installation)
+- [Usage](#usage)
 - [How to Contribute](#how-to-contribute)
 - [Code of Conduct](#code-of-conduct)
 - [References](#references)
@@ -46,9 +65,6 @@ source .venv/bin/activate # Linux/macOS
 pip install -e .
 pip install uv pytest
 
-uv run tinytracer/main.py
-
-uv run pytest
 ```
 
 > The generated image will be in `.ppm` format, inside the `output` folder.

@@ -12,6 +12,18 @@ from shapes.material import Lambertian, EmissiveMaterial, Metal, Dielectric
 import random
 import multiprocessing
 import time
+import numpy as np
+from PIL import Image
+import argparse
+
+
+# arg handling
+def parse_args():
+    parser = argparse.ArgumentParser(description="tinytracer")
+    parser.add_argument(
+        "--format", choices=["png", "ppm"], default="ppm", help="format specifier"
+    )
+    return parser.parse_args()
 
 
 def render_pixel(args):
@@ -28,7 +40,7 @@ def render_pixel(args):
     return (i, j, r, g, b)
 
 
-def main():
+def main(args):
     aspect_ratio = 16.0 / 9.0
     image_width = 400
     image_height = int(image_width / aspect_ratio)
@@ -93,17 +105,27 @@ def main():
     for i, j, r, g, b in results:
         framebuffer[image_height - 1 - j][i] = (r, g, b)
 
-    with open("tinytracer/output/image.ppm", "wb") as f:
-        f.write(f"P6\n{image_width} {image_height}\n255\n".encode())
-        for row in framebuffer:
-            for r, g, b in row:
-                f.write(bytes([r, g, b]))
+    if args.format == "png":
+        # new PIL: for png
+        img_array = np.array(framebuffer, dtype=np.uint8)
+        img = Image.fromarray(img_array, "RGB")
+        img.save("tinytracer/output/image.png")
+        print("Saved as output/image.png")
+    else:
+        # current ppm encoding
+        with open("tinytracer/output/image.ppm", "wb") as f:
+            f.write(f"P6\n{image_width} {image_height}\n255\n".encode())
+            for row in framebuffer:
+                for r, g, b in row:
+                    f.write(bytes([r, g, b]))
 
-    print("Saved as output/image.ppm")
+        print("Saved as output/image.ppm")
+
 
 if __name__ == "__main__":
+    args = parse_args()
     start = time.time()
-    main()
+    main(args)
     print(f"Render time: {time.time() - start:.2f}s")
 
 
