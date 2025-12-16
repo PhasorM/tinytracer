@@ -18,8 +18,9 @@ from PIL import Image
 import argparse
 from pathlib import Path
 
-def aspect_ratio(ratio: str) -> float: #aspect ratio format checker
-    if ratio=="":
+
+def aspect_ratio(ratio: str) -> float:  # aspect ratio format checker
+    if ratio == "":
         return 0
     try:
         w, h = ratio.split(":")
@@ -32,6 +33,7 @@ def aspect_ratio(ratio: str) -> float: #aspect ratio format checker
             "Invalid Formatting of ratio, must be float(X):float(Y)"
         )
 
+
 # arg handling
 def parse_args():
     parser = argparse.ArgumentParser(description="tinytracer")
@@ -40,19 +42,28 @@ def parse_args():
     )
 
     parser.add_argument(
-        "--width", type=int, default=-1, help="Choose the width of Output Image (INTEGER):" 
+        "--width",
+        type=int,
+        default=-1,
+        help="Choose the width of Output Image (INTEGER):",
     )
-    #-1 for now, default will be handled in initializiation (to ensure entering any two of [width,height,ratio] works)
+    # -1 for now, default will be handled in initializiation (to ensure entering any two of [width,height,ratio] works)
     parser.add_argument(
-        "--height", type=int, default=-1, help="Choose the height of Output Image (INTEGER)"
+        "--height",
+        type=int,
+        default=-1,
+        help="Choose the height of Output Image (INTEGER)",
     )
-    #-1 for now, default will be handled in initializiation (to ensure entering any two of [width,height,ratio] works)
+    # -1 for now, default will be handled in initializiation (to ensure entering any two of [width,height,ratio] works)
     parser.add_argument(
         "--samples", type=int, default=200, help="Number of Samples per pixel"
     )
 
     parser.add_argument(
-        "--output", type=str, default="DEFAULT", help="File Output Path (including filename)"
+        "--output",
+        type=str,
+        default="DEFAULT",
+        help="File Output Path (including filename)",
     )
 
     parser.add_argument(
@@ -79,48 +90,40 @@ def render_pixel(args):
 
 
 def main(args):
-    
+
     aspect_ratio = 16.0 / 9.0
 
-    #initialization of parameters from command line arguments
+    # initialization of parameters from command line arguments
     if args.aspectratio is not None:
-        aspect_ratio=args.aspectratio
-    
-    if args.width>0 and args.height>0:
+        aspect_ratio = args.aspectratio
+
+    if args.width > 0 and args.height > 0:
         image_width = args.width
-        image_height=args.height
-        aspect_ratio=image_width/image_height
-    elif args.width>0:
-        image_width=args.width
-        image_height=int(image_width/aspect_ratio)
+        image_height = args.height
+        aspect_ratio = image_width / image_height
+    elif args.width > 0:
+        image_width = args.width
+        image_height = int(image_width / aspect_ratio)
 
     elif args.height > 0:
-        image_height=args.height
-        image_width=int(image_height*aspect_ratio)
+        image_height = args.height
+        image_width = int(image_height * aspect_ratio)
     else:
-        image_width=400
-        image_height=int(image_width/aspect_ratio)
-
-
+        image_width = 400
+        image_height = int(image_width / aspect_ratio)
 
     samples_per_pixel = args.samples
     max_depth = args.depth
     world = HittableList()
     pixels = []
-    outDir="output/image.ppm"
-    if args.output=="DEFAULT":
-        if args.format=="png":
-            outDir="tinytracer/output/image.png"
-        else:#needs to be changed if adding more compatibility like jpeg or smth
-            outDir="tinytracer/output/image.ppm"
+    outDir = "output/image.ppm"
+    if args.output == "DEFAULT":
+        if args.format == "png":
+            outDir = "tinytracer/output/image.png"
+        else:  # needs to be changed if adding more compatibility like jpeg or smth
+            outDir = "tinytracer/output/image.ppm"
     outPath = Path(outDir)
-    outPath.parent.mkdir(parents=True, exist_ok=True)#making the folder
-
-
-    
-    
-    
-    
+    outPath.parent.mkdir(parents=True, exist_ok=True)  # making the folder
 
     world.add(Sphere(Vec3(0, -100.5, 0), 100, Lambertian(Color(0.27, 0.28, 0.26))))
     world.add(Sphere(Vec3(0, 0, -2), 0.7, Dielectric(1.5)))
@@ -185,7 +188,7 @@ def main(args):
         img.save(outPath)
         print(f"Saved as {outPath}")
     else:
-        #ppm encoding
+        # ppm encoding
         with open(outPath, "wb") as f:
             f.write(f"P6\n{image_width} {image_height}\n255\n".encode())
             for row in framebuffer:
