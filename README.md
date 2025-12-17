@@ -9,6 +9,15 @@
 
 This project is part of **[Winter of Open Source](https://winter-of-open-source.vercel.app/)**, where contributors can improve the engine, add materials, implement new shapes, optimize performance etc.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Demo Images](#demo-images)
+- [Usage](#usage)
+- [How to Contribute](#how-to-contribute)
+- [Code of Conduct](#code-of-conduct)
+- [References](#references)
+
 ## Demo Images
 
 <img src="tinytracer/output/demos/demo5.png" width="500">
@@ -26,32 +35,6 @@ Implemented so far:
 - Multiprocessing for faster rendering
 - Basic caching optimizations
 
-## Usage
-Run the TinyTracer renderer using `uv`:
-```bash
-uv run tinytracer/main.py
-```
-
-The generated image will be in `.ppm` format by default at `tinytracer\output` folder.
-
-For `.png` format, use the `--format=png` argument.
-
-```bash
-uv run tinytracer/main.py --format=png
-```
-
-To run tests:
-```bash
-uv run pytest
-```
-## Table of Contents
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [How to Contribute](#how-to-contribute)
-- [Code of Conduct](#code-of-conduct)
-- [References](#references)
-
 ## Installation
 
 ```bash
@@ -68,6 +51,64 @@ pip install uv pytest
 ```
 
 > The generated image will be in `.ppm` format, inside the `output` folder.
+
+## Usage
+Run the TinyTracer renderer using `uv`:
+```bash
+uv run tinytracer/main.py
+```
+Advanced controls:
+```bash
+uv run main.py [-help] [--format {png,ppm}] [--width WIDTH] [--height HEIGHT] [--samples SAMPLES] [--output OUTPUT] [--depth DEPTH] [--aspectratio ASPECTRATIO]
+```
+
+The generated image will be in `.ppm` format by default at `tinytracer\output` folder.
+
+To run tests:
+```bash
+uv run pytest
+```
+### Available Arguments :
+- `width` To adjust width of output image.
+    ```bash
+    uv run  main.py --width=INTEGER # Default = 400
+    ``` 
+    
+- `height` To adjust width of output image.
+    
+    ```bash
+    uv run main.py --height=INTEGER # Default = 225
+    ``` 
+- `aspectratio` To adjust aspect ratio of output image (OVERRIDDEN if both height and width given)
+
+    ```bash
+    uv run main.py --aspectratio=X:Y # Default = 16:9
+    ``` 
+- `samples` To adjust number of samples per pixel.
+
+    ```bash
+    uv run main.py --samples=INTEGER # Default = 200
+    ``` 
+- `depth` To adjust depth of ray tracing.
+
+    ```bash
+    uv run main.py --depth=INTEGER # Default = 50
+    ``` 
+- `output` To select file output path <i>( INCLUDING FILENAME )</i>.
+
+    ```bash
+    uv run main.py --output=PATH # Default = tinytracer/output/image.ppm
+    ``` 
+- `format` To select file output format [ png / ppm ]
+
+    ```bash
+    uv run main.py --format={png/ppm} # Default = ppm
+    ``` 
+
+
+
+
+
 
 ## How to Contribute
 
