@@ -53,6 +53,14 @@ class Vec3:
         s = 1e-8
         return abs(self.x) < s and abs(self.y) < s and abs(self.z) < s
 
+    def clamp(self, min_val, max_val):
+        # clamps each component of the vector between min and max
+        return Vec3(
+            min(max(self.x, min_val), max_val),
+            min(max(self.y, min_val), max_val),
+            min(max(self.z, min_val), max_val)
+        )
+
 
 def random_unit_vector():
     while True:
