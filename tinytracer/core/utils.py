@@ -108,12 +108,10 @@ def write_color(pixel_color, samples_per_pixel):
     r = math.sqrt(scale * pixel_color.x)
     g = math.sqrt(scale * pixel_color.y)
     b = math.sqrt(scale * pixel_color.z)
-
-    return (
-        int(256 * clamp(r, 0.0, 0.999)),
-        int(256 * clamp(g, 0.0, 0.999)),
-        int(256 * clamp(b, 0.0, 0.999)),
-    )
+    return_value = 256 * Vec3(r, g, b).clamp(
+        0.0, 0.999
+    )  # scaling to [0,255] and clamping done in one line using new clamp function from vec.py
+    return (int(return_value.x), int(return_value.y), int(return_value.z))
     # "Human eyes aren’t linear. Without gamma correction, the render will look too dark."
     # this didnt make any sense to me
     # i need to read that section again uhh
