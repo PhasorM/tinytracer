@@ -55,17 +55,10 @@ class Vec3:
 
     def clamp(self, min_val, max_val):
         # clamps each component of the vector between min and max
-<<<<<<< HEAD
         return Vec3(
             min(max(self.x, min_val), max_val),
             min(max(self.y, min_val), max_val),
-            min(max(self.z, min_val), max_val)
-=======
-        return (
-            min(max(self.x, min_val), max_val),
-            min(max(self.y, min_val), max_val),
-            min(max(self.z, min_), max_val),
->>>>>>> 9c71fb0 (Fixed clamp method)
+            min(max(self.z, min_val), max_val),
         )
 
 
@@ -84,6 +77,14 @@ def random_in_hemisphere(normal):
         # i dont need to keep this right now,
         # might need for mirrors and all
         return -in_unit_sphere
+
+
+def random_in_unit_disk():
+    # generate a random point in unit disk in xy plane
+    while True:
+        p = Vec3(uniform(-1, 1), uniform(-1, 1), 0)
+        if p.length_squared() < 1:
+            return p.unit_vector()
 
 
 Color = Vec3
